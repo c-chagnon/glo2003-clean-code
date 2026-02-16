@@ -48,7 +48,7 @@ class CompanyPayrollTest {
 
         company.preparePaychecks();
 
-        Paycheck paycheck = company.getPendings().get(0);
+        Paycheck paycheck = company.getPaycheckList().get(0);
         assertThat(paycheck.getRecipient()).isEqualTo(HOURLY_NAME);
         assertThat(paycheck.getAmount()).isEqualTo(HOURLY_RATE * HOURLY_AMOUNT);
     }
@@ -59,7 +59,7 @@ class CompanyPayrollTest {
 
         company.preparePaychecks();
 
-        Paycheck paycheck = company.getPendings().get(0);
+        Paycheck paycheck = company.getPaycheckList().get(0);
         assertThat(paycheck.getRecipient()).isEqualTo(SALARIED_NAME);
         assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_AMOUNT);
     }
@@ -75,7 +75,7 @@ class CompanyPayrollTest {
 
         company.processPaychecks();
 
-        assertThat(company.getPendings().size()).isEqualTo(0);
+        assertThat(company.getPaycheckList().size()).isEqualTo(0);
     }
 
     @Test
@@ -121,7 +121,7 @@ class CompanyPayrollTest {
 
         company.preparePaychecks();
 
-        assertThat(company.getPendings().size()).isEqualTo(5);
+        assertThat(company.getPaycheckList().size()).isEqualTo(5);
     }
 
     @Test
@@ -134,7 +134,7 @@ class CompanyPayrollTest {
 
         company.preparePaychecks();
 
-        assertThat(company.getPendings().size()).isEqualTo(5);
+        assertThat(company.getPaycheckList().size()).isEqualTo(5);
     }
 
     @Test
@@ -144,7 +144,7 @@ class CompanyPayrollTest {
         company.raiseSalary(hourlyEmployee, RAISE);
 
         company.preparePaychecks();
-        Paycheck paycheck = company.getPendings().get(0);
+        Paycheck paycheck = company.getPaycheckList().get(0);
         assertThat(paycheck.getAmount()).isEqualTo((HOURLY_RATE + RAISE) * HOURLY_AMOUNT);
     }
 
@@ -155,7 +155,7 @@ class CompanyPayrollTest {
         company.raiseSalary(salariedEmployee, RAISE);
 
         company.preparePaychecks();
-        Paycheck paycheck = company.getPendings().get(0);
+        Paycheck paycheck = company.getPaycheckList().get(0);
         assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_AMOUNT + RAISE);
     }
 
@@ -177,7 +177,7 @@ class CompanyPayrollTest {
         company.addEmployee(anotherSalariedEmployee);
         company.preparePaychecks();
 
-        float avg = company.avgPayCheck_pending();
+        float avg = company.getAveragePaycheck();
 
         assertThat(avg).isEqualTo((BIWEEKLY_AMOUNT + ANOTHER_MONTHLY_AMOUNT) / 2);
     }
@@ -188,7 +188,7 @@ class CompanyPayrollTest {
         company.addEmployee(anotherSalariedEmployee);
         company.preparePaychecks();
 
-        float t = company.getTotalmoney();
+        float t = company.getTotalPayout();
 
         assertThat(t).isEqualTo(BIWEEKLY_AMOUNT + ANOTHER_MONTHLY_AMOUNT);
     }
