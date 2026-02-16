@@ -21,7 +21,7 @@ public class SalariedEmployee extends Employee {
         return "SalariedEmployee{" +
                 "name='" + this.getName() + '\'' +
                 ", role='" + this.getRole() + '\'' +
-                ", vacation_days=" + this.getVacation_days() +
+                ", vacationDays=" + this.getVacationDays() +
                 ", monthly=" + biweekly +
                 '}';
     }

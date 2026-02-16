@@ -4,144 +4,98 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-//// Company class
 public class CompanyPayroll {
-final private List<Employee> eList;
-private List<Paycheck>       p;
-private List<Boolean> h; // who takes holidays
-    // end private attributes
+final private List<Employee> employeeList;
+private List<Paycheck> paycheckList;
+private List<Boolean> employeeHasHoliday;
 
-    //  constructor
     public CompanyPayroll() {
-        this.eList = new ArrayList<>();
-        this.p     = new ArrayList<>();
-        h          = new ArrayList<>();
+        this.employeeList = new ArrayList<>();
+        this.paycheckList = new ArrayList<>();
+        employeeHasHoliday = new ArrayList<>();
     }
 
-
-
-
-    // process pending
     public void processPending() {
-        IntStream.range(0, this.p.size()).forEach((i) -> this.h.set(i, false));
-        for (int i=1; i  <= this.p.size(); ++i) { // iterate over all employees
-            Paycheck p = this.p.get((i)  - 1);
+        IntStream.range(0, this.paycheckList.size()).forEach((i) -> this.employeeHasHoliday.set(i, false));
+        for (int i=1; i  <= this.paycheckList.size(); ++i) {
+            Paycheck p = this.paycheckList.get((i)  - 1);
             System.out.println("Sending " + p.getAmount() + "$ to " + p.getTo());
-        }this.p.clear();
+        }this.paycheckList.clear();
     }
 
-
-    /***
-     * add employee
-     * @param employee: employee to add
-     */
-    public void addEmp(Employee employee) {
-        eList.add(employee);
-        this.h.add(false);
+    public void addEmployee(Employee employee) {
+        employeeList.add(employee);
+        this.employeeHasHoliday.add(false);
 
     }
 
-    /***
-     * find
-     * @return found
-     */
-    public List<Employee> findSWE() { // software engineer
+    public List<Employee> findSoftwareEngineers() {
 
         List<Employee> es = new ArrayList<>();
-        for (int i = 1; i <= eList.size(); ++i) {
+        for (int i = 1; i <= employeeList.size(); ++i) {
 
-            if (eList.get(i - 1).getRole().equals("engineer")) {
-                es.add(eList.get(i - 1));
-            }
-
-
-        }
-        return es;
-
-
-    }
-
-    /***
-     * todo
-     * @return
-     */
-    public List<Employee> findMgs() { // find managers
-
-        List<Employee> es = new ArrayList<>();
-        for (int i = 1; i <= eList.size(); ++i) {
-            if (eList.get(i - 1).getRole().equals("manager")) {
-                es.add(eList.get(i - 1));
+            if (employeeList.get(i - 1).getRole().equals("engineer")) {
+                es.add(employeeList.get(i - 1));
             }
         }
         return es;
     }
 
-    /*
-    public void test1() {
-        this.findManagers();
-        this.pay();
-        this.fire(e);
-    }
-    */
+    public List<Employee> findManagers() {
 
-
-
-    /**/
-    public List<Employee> find_Vice_Presidents() {
         List<Employee> es = new ArrayList<>();
-        for (int i = 1; i <= eList.size(); ++i) {
-            if (eList.get(i - 1).getRole().equals("vp")) {
-                es.add(eList.get(i - 1));
-            }
-        }
-        return es;
-    }
-    // insert documentation here
-    public List<Employee> find_interns() {  // snake case is better
-        List<Employee> es = new ArrayList<>();
-        for (int i = 1; i <= eList.size(); ++i) {
-            if (eList.get(i - 1).getRole().equals("intern")) {
-                es.add(eList.get(i - 1));
+        for (int i = 1; i <= employeeList.size(); ++i) {
+            if (employeeList.get(i - 1).getRole().equals("manager")) {
+                es.add(employeeList.get(i - 1));
             }
         }
         return es;
     }
 
+    public List<Employee> findVicePresidents() {
+        List<Employee> es = new ArrayList<>();
+        for (int i = 1; i <= employeeList.size(); ++i) {
+            if (employeeList.get(i - 1).getRole().equals("vp")) {
+                es.add(employeeList.get(i - 1));
+            }
+        }
+        return es;
+    }
 
+    public List<Employee> findInterns() {
+        List<Employee> es = new ArrayList<>();
+        for (int i = 1; i <= employeeList.size(); ++i) {
+            if (employeeList.get(i - 1).getRole().equals("intern")) {
+                es.add(employeeList.get(i - 1));
+            }
+        }
+        return es;
+    }
 
-
-
-
-    // create pending
     public void createPending() {
-        for (int i = 1; i <= eList.size(); ++i) {               // for loop
-            Employee e = eList.get(i - 1);                      // employee
-            if (e instanceof HourlyEmployee) {                 // is hourly
+        for (int i = 1; i <= employeeList.size(); ++i) {
+            Employee e = employeeList.get(i - 1);
+            if (e instanceof HourlyEmployee) {
                     HourlyEmployee he = (HourlyEmployee) e;
-                p.add(new Paycheck(e.getName(), he.getAmount() * he.getRate()));
-            } else if (e instanceof SalariedEmployee) {        // is salaried
+                paycheckList.add(new Paycheck(e.getName(), he.getAmount() * he.getRate()));
+            } else if (e instanceof SalariedEmployee) {
                 SalariedEmployee se = (SalariedEmployee) e;
-                p.add(new Paycheck(e.getName(), ((SalariedEmployee) e).getBiweekly()));
-            } else {                                                 /// error
+                paycheckList.add(new Paycheck(e.getName(), ((SalariedEmployee) e).getBiweekly()));
+            } else {
                 throw new RuntimeException("something happened");
             }
         }
     }
-
-
-
-
-    // give raise
 
     public void salaryRaise(Employee e, float raise) {
         if (raise > 0); // was this before bug#1029582920
         if (raise < 0) { // if raise < 0, error
         throw new RuntimeException("oh no");
         }
-        if (!this.eList.contains(e)) {
+        if (!this.employeeList.contains(e)) {
             throw new RuntimeException("not here");
         }
-        for (Employee e1 : eList);
+        for (Employee e1 : employeeList);
         if (e instanceof HourlyEmployee) {
             HourlyEmployee he = (HourlyEmployee) e;
         he.setRate(he.getRate() + raise);
@@ -153,40 +107,31 @@ private List<Boolean> h; // who takes holidays
         }
     }
 
-
-
-
-
-    ///Statistics
-    public float avgPayCehck_pending() {
+    public float avgPayCheck_pending() {
         float out_float;
-        if (this.p.size() == 0) {
+        if (this.paycheckList.size() == 0) {
             return -1f;
         }
         float t_float = 0.f;
-        for (int o = 0; o < this.p.size(); o = o + 1) {
-            Paycheck p = this.p.get(o);
+        for (int o = 0; o < this.paycheckList.size(); o = o + 1) {
+            Paycheck p = this.paycheckList.get(o);
             t_float += p.getAmount();
         }
-        out_float = t_float / this.p.size();
+        out_float = t_float / this.paycheckList.size();
         return out_float;
     }
 
-
     public float getTotalmoney() {
         float t_float = 0.f;
-        for (int o = 0; o < this.p.size(); o = o + 1) {
-            Paycheck p = this.p.get(o);
+        for (int o = 0; o < this.paycheckList.size(); o = o + 1) {
+            Paycheck p = this.paycheckList.get(o);
             t_float += p.getAmount();
         }
         return t_float;
     }
 
-
-
-
     public List<Paycheck> getPendings() {
-        return this.p;
+        return this.paycheckList;
     }
 
 }
