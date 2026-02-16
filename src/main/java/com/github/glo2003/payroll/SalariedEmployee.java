@@ -8,12 +8,12 @@ public class SalariedEmployee extends Employee {
         this.biweekly = biweekly;
     }
 
-    public float getBiweekly() {
+    public float getSalary() {
         return biweekly;
     }
 
-    public void setBiweekly(float biweekly) {
-        this.biweekly = biweekly;
+    public void raiseSalary(float raise) {
+        this.biweekly += raise;
     }
 
     @Override

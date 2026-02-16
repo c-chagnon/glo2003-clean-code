@@ -28,6 +28,10 @@ public abstract class Employee {
         this.vacationDays = vacationDays;
     }
 
+    public abstract float getSalary();
+
+    public abstract void raiseSalary(float raise);
+
     @Override
     public String toString() {
         return "Employee{" +

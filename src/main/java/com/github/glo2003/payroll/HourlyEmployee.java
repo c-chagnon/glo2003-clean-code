@@ -10,16 +10,12 @@ public class HourlyEmployee extends Employee {
         this.amount = amount;
     }
 
-    public float getRate() {
-        return rate;
+    public float getSalary() {
+        return amount * rate;
     }
 
-    public float getAmount() {
-        return amount;
-    }
-
-    public void setRate(float rate) {
-        this.rate = rate;
+    public void raiseSalary(float raise) {
+        this.rate += raise;
     }
 
     @Override

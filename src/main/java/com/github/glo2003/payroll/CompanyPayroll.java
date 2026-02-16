@@ -48,15 +48,7 @@ private List<Boolean> employeeHasHoliday;
     public void preparePaychecks() {
         for (int i = 0; i < employeeList.size(); i++) {
             Employee e = employeeList.get(i);
-            if (e instanceof HourlyEmployee) {
-                    HourlyEmployee he = (HourlyEmployee) e;
-                paycheckList.add(new Paycheck(e.getName(), he.getAmount() * he.getRate()));
-            } else if (e instanceof SalariedEmployee) {
-                SalariedEmployee se = (SalariedEmployee) e;
-                paycheckList.add(new Paycheck(e.getName(), se.getBiweekly()));
-            } else {
-                throw new RuntimeException("Employee " + e.getName() + " is not in supported types of employees");
-            }
+            paycheckList.add(new Paycheck(e.getName(), e.getSalary()));
         }
     }
 
@@ -75,15 +67,7 @@ private List<Boolean> employeeHasHoliday;
         if (!this.employeeList.contains(e)) {
             throw new RuntimeException("Employee " + e.getName() + " is not in company payroll");
         }
-        if (e instanceof HourlyEmployee) {
-            HourlyEmployee he = (HourlyEmployee) e;
-        he.setRate(he.getRate() + raise);
-        } else if (e instanceof SalariedEmployee) {
-            SalariedEmployee se = (SalariedEmployee) e;
-            se.setBiweekly(se.getBiweekly() + raise);
-        } else {
-            throw new RuntimeException("Employee " + e.getName() + " is not in supported types of employees");
-        }
+        e.raiseSalary(raise);
     }
 
     public float getAveragePaycheck() {
