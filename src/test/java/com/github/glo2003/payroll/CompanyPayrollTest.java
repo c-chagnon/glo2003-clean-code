@@ -49,7 +49,7 @@ class CompanyPayrollTest {
         company.createPending();
 
         Paycheck paycheck = company.getPendings().get(0);
-        assertThat(paycheck.getTo()).isEqualTo(HOURLY_NAME);
+        assertThat(paycheck.getRecipient()).isEqualTo(HOURLY_NAME);
         assertThat(paycheck.getAmount()).isEqualTo(HOURLY_RATE * HOURLY_AMOUNT);
     }
 
@@ -60,7 +60,7 @@ class CompanyPayrollTest {
         company.createPending();
 
         Paycheck paycheck = company.getPendings().get(0);
-        assertThat(paycheck.getTo()).isEqualTo(SALARIED_NAME);
+        assertThat(paycheck.getRecipient()).isEqualTo(SALARIED_NAME);
         assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_AMOUNT);
     }
 
