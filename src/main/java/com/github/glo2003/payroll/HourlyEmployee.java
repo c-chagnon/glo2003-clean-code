@@ -4,10 +4,8 @@ public class HourlyEmployee extends Employee {
     private float rate;
     private float amount;
 
-    // TODO constructor
-
-    public HourlyEmployee(String name, String role, int vacation_days, float rate, float amount) {
-        super(name, role, vacation_days);
+    public HourlyEmployee(String name, String role, int vacationDays, float rate, float amount) {
+        super(name, role, vacationDays);
         this.rate = rate;
         this.amount = amount;
     }
@@ -29,7 +27,7 @@ public class HourlyEmployee extends Employee {
         return "HourlyEmployee{" +
                 "name='" + this.getName() + '\'' +
                 ", role='" + this.getRole() + '\'' +
-                ", vacation_days=" + this.getVacation_days() +
+                ", vacationDays=" + this.getVacationDays() +
                 ", hourlyRate=" + rate +
                 ", amount=" + amount +
                 '}';
