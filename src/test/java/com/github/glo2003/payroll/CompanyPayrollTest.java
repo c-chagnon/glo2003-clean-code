@@ -10,11 +10,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 class CompanyPayrollTest {
 
-    public static final float HOURLY_RATE = 10;
-    public static final float HOURLY_AMOUNT = 25;
-    public static final String HOURLY_NAME = "William";
-    public static final String SALARIED_NAME = "Xavier";
-    public static final float BIWEEKLY_AMOUNT = 10_000;
+    public static final float HOURLY_EMPLOYEE_RATE = 10;
+    public static final float HOURLY_EMPLOYEE_AMOUNT = 25;
+    public static final String HOURLY_EMPLOYEE_NAME = "William";
+    public static final String SALARIED_EMPLOYEE_NAME = "Xavier";
+    public static final float BIWEEKLY_EMPLOYEE_AMOUNT = 10_000;
     public static final float RAISE = 10;
     public static final float ANOTHER_MONTHLY_AMOUNT = 20_000;
     public static final int VACATION_DAYS = 12;
@@ -37,35 +37,35 @@ class CompanyPayrollTest {
         intern1 = new HourlyEmployee("Ernest", "intern", 10, 5, 50 * 2);
         intern2 = new HourlyEmployee("Fred", "intern", 10, 5, 50 * 2);
 
-        hourlyEmployee = new HourlyEmployee(HOURLY_NAME, "engineer", VACATION_DAYS, HOURLY_RATE, HOURLY_AMOUNT);
-        salariedEmployee = new SalariedEmployee(SALARIED_NAME, "engineer", VACATION_DAYS, BIWEEKLY_AMOUNT);
+        hourlyEmployee = new HourlyEmployee(HOURLY_EMPLOYEE_NAME, "engineer", VACATION_DAYS, HOURLY_EMPLOYEE_RATE, HOURLY_EMPLOYEE_AMOUNT);
+        salariedEmployee = new SalariedEmployee(SALARIED_EMPLOYEE_NAME, "engineer", VACATION_DAYS, BIWEEKLY_EMPLOYEE_AMOUNT);
         anotherSalariedEmployee = new SalariedEmployee("Yan", "manager", VACATION_DAYS, ANOTHER_MONTHLY_AMOUNT);
     }
 
     @Test
-    void createPendingsCreatesCorrectHourlyPaycheck() {
+    void hourlyEmployee_preparePaychecks_createsCorrectHourlyPaycheck() {
         company.addEmployee(hourlyEmployee);
 
         company.preparePaychecks();
 
         Paycheck paycheck = company.getPaycheckList().get(0);
-        assertThat(paycheck.getRecipient()).isEqualTo(HOURLY_NAME);
-        assertThat(paycheck.getAmount()).isEqualTo(HOURLY_RATE * HOURLY_AMOUNT);
+        assertThat(paycheck.getRecipient()).isEqualTo(HOURLY_EMPLOYEE_NAME);
+        assertThat(paycheck.getAmount()).isEqualTo(HOURLY_EMPLOYEE_RATE * HOURLY_EMPLOYEE_AMOUNT);
     }
 
     @Test
-    void createPendingsCreatesCorrectSalariedPaycheck() {
+    void salariedEmployee_preparePaychecks_createsCorrectSalariedPaycheck() {
         company.addEmployee(salariedEmployee);
 
         company.preparePaychecks();
 
         Paycheck paycheck = company.getPaycheckList().get(0);
-        assertThat(paycheck.getRecipient()).isEqualTo(SALARIED_NAME);
-        assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_AMOUNT);
+        assertThat(paycheck.getRecipient()).isEqualTo(SALARIED_EMPLOYEE_NAME);
+        assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_EMPLOYEE_AMOUNT);
     }
 
     @Test
-    void processPending_shouldRemovePendingPaychecks() {
+    void notZeroEmployees_processPaychecks_noPendingPaychecks() {
         company.addEmployee(vp);
         company.addEmployee(eng);
         company.addEmployee(manager);
@@ -79,7 +79,7 @@ class CompanyPayrollTest {
     }
 
     @Test
-    void findSWE_shouldReturnSoftwareEngineers() {
+    void oneSoftwareEngineer_findSoftwareEngineers_returnsListWithCorrectEmployee() {
         company.addEmployee(eng);
 
         List<Employee> es = company.findSoftwareEngineers();
@@ -87,7 +87,7 @@ class CompanyPayrollTest {
     }
 
     @Test
-    void findMgs_shouldReturnManagers() {
+    void oneManager_findManagers_returnsListWithCorrectEmployee() {
         company.addEmployee(manager);
 
         List<Employee> es = company.findManagers();
@@ -95,7 +95,7 @@ class CompanyPayrollTest {
     }
 
     @Test
-    void find_Vice_Presidents_shouldReturnVicePresidents() {
+    void oneVicePresident_findVicePresidents_returnsListWithCorrectEmployee() {
         company.addEmployee(vp);
 
         List<Employee> es = company.findVicePresidents();
@@ -103,7 +103,7 @@ class CompanyPayrollTest {
     }
 
     @Test
-    void find_interns_shouldReturnInterns() {
+    void twoInterns_findInterns_returnsListWithCorrectEmployees() {
         company.addEmployee(intern1);
         company.addEmployee(intern2);
 
@@ -112,7 +112,7 @@ class CompanyPayrollTest {
     }
 
     @Test
-    void createPending_shouldCreatePendingPaycheck() {
+    void fiveEmployees_preparePaychecks_fivePaychecksInList() {
         company.addEmployee(vp);
         company.addEmployee(eng);
         company.addEmployee(manager);
@@ -125,71 +125,58 @@ class CompanyPayrollTest {
     }
 
     @Test
-    void hourlyEmployee() {
-        company.addEmployee(vp);
-        company.addEmployee(eng);
-        company.addEmployee(manager);
-        company.addEmployee(intern1);
-        company.addEmployee(intern2);
-
-        company.preparePaychecks();
-
-        assertThat(company.getPaycheckList().size()).isEqualTo(5);
-    }
-
-    @Test
-    void hourlyRaiseShouldRaiseHourlySalary() {
+    void hourlyEmployee_raiseSalary_hourlySalaryIsRaised() {
         company.addEmployee(hourlyEmployee);
 
         company.raiseSalary(hourlyEmployee, RAISE);
 
         company.preparePaychecks();
         Paycheck paycheck = company.getPaycheckList().get(0);
-        assertThat(paycheck.getAmount()).isEqualTo((HOURLY_RATE + RAISE) * HOURLY_AMOUNT);
+        assertThat(paycheck.getAmount()).isEqualTo((HOURLY_EMPLOYEE_RATE + RAISE) * HOURLY_EMPLOYEE_AMOUNT);
     }
 
     @Test
-    void salariedRaiseShouldRaiseMonthlySalary() {
+    void salariedEmployee_raiseSalary_monthlySalaryIsRaised() {
         company.addEmployee(salariedEmployee);
 
         company.raiseSalary(salariedEmployee, RAISE);
 
         company.preparePaychecks();
         Paycheck paycheck = company.getPaycheckList().get(0);
-        assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_AMOUNT + RAISE);
+        assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_EMPLOYEE_AMOUNT + RAISE);
     }
 
     @Test
-    void negativeRaiseShouldThrow() {
+    void negativeRaise_raiseSalary_throwsRuntimeException() {
         company.addEmployee(eng);
 
         Assert.assertThrows(RuntimeException.class, () -> company.raiseSalary(eng, -1));
     }
 
     @Test
-    void cannotGiveRaiseIfNotInCompany() {
+    void employeeNotInCompany_raiseSalary_throwsRuntimeException() {
         Assert.assertThrows(RuntimeException.class, () -> company.raiseSalary(eng, 10));
     }
 
     @Test
-    void avgPayCehck_pending() {
+    void twoEmployees_getAveragePaycheck_isEqualToAverageOfTwoPaychecks() {
         company.addEmployee(salariedEmployee);
         company.addEmployee(anotherSalariedEmployee);
         company.preparePaychecks();
 
         float avg = company.getAveragePaycheck();
 
-        assertThat(avg).isEqualTo((BIWEEKLY_AMOUNT + ANOTHER_MONTHLY_AMOUNT) / 2);
+        assertThat(avg).isEqualTo((BIWEEKLY_EMPLOYEE_AMOUNT + ANOTHER_MONTHLY_AMOUNT) / 2);
     }
 
     @Test
-    void getTotalmoney() {
+    void twoEmployees_getTotalPayout_isEqualToSumOfTwoPaychecks() {
         company.addEmployee(salariedEmployee);
         company.addEmployee(anotherSalariedEmployee);
         company.preparePaychecks();
 
         float t = company.getTotalPayout();
 
-        assertThat(t).isEqualTo(BIWEEKLY_AMOUNT + ANOTHER_MONTHLY_AMOUNT);
+        assertThat(t).isEqualTo(BIWEEKLY_EMPLOYEE_AMOUNT + ANOTHER_MONTHLY_AMOUNT);
     }
 }
