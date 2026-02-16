@@ -28,7 +28,7 @@ public class Main {
         companyPayroll.findSoftwareEngineers().forEach(System.out::println);
         companyPayroll.findInterns().forEach(System.out::println);
 
-        System.out.println("----- Giving raises -----");
+        System.out.println("\n----- Giving raises -----");
         companyPayroll.raiseSalary(e1, 10);
         companyPayroll.raiseSalary(e2, 100);
 
@@ -37,7 +37,7 @@ public class Main {
 
         System.out.println("\n----- Pay statistics -----");
         float t = companyPayroll.getTotalPayout();
-        System.out.println("Total money spent: ");
+        System.out.println("Total money spent: " + t);
         float avg = companyPayroll.getAveragePaycheck();
         System.out.println("Average paycheck: " + avg);
 
