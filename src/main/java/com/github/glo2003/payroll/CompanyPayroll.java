@@ -30,43 +30,29 @@ private List<Boolean> employeeHasHoliday;
     }
 
     public List<Employee> findSoftwareEngineers() {
-        List<Employee> es = new ArrayList<>();
-        for (int i = 0; i < employeeList.size(); i++) {
-            if (employeeList.get(i).getRole().equals("engineer")) {
-                es.add(employeeList.get(i));
-            }
-        }
-        return es;
+        return findEmployeesByRole("engineer");
     }
 
     public List<Employee> findManagers() {
-        List<Employee> es = new ArrayList<>();
-        for (int i = 0; i < employeeList.size(); i++) {
-            if (employeeList.get(i).getRole().equals("manager")) {
-                es.add(employeeList.get(i));
-            }
-        }
-        return es;
+        return findEmployeesByRole("manager");
     }
 
     public List<Employee> findVicePresidents() {
-        List<Employee> es = new ArrayList<>();
-        for (int i = 0; i < employeeList.size(); i++) {
-            if (employeeList.get(i).getRole().equals("vp")) {
-                es.add(employeeList.get(i));
-            }
-        }
-        return es;
+        return findEmployeesByRole("vp");
     }
 
     public List<Employee> findInterns() {
-        List<Employee> es = new ArrayList<>();
+        return findEmployeesByRole("intern");
+    }
+
+    public List<Employee> findEmployeesByRole(String role) {
+        List<Employee> employeesWithRole = new ArrayList<>();
         for (int i = 0; i < employeeList.size(); i++) {
-            if (employeeList.get(i).getRole().equals("intern")) {
-                es.add(employeeList.get(i));
+            if (employeeList.get(i).getRole().equals(role)) {
+                employeesWithRole.add(employeeList.get(i));
             }
         }
-        return es;
+        return employeesWithRole;
     }
 
     public void createPending() {
