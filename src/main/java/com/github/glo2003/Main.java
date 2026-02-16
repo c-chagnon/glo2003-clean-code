@@ -33,7 +33,7 @@ public class Main {
         companyPayroll.salaryRaise(e2, 100);
 
         System.out.println("\n----- Create paychecks -----");
-        companyPayroll.createPending();
+        companyPayroll.preparePaychecks();
 
         System.out.println("\n----- Pay statistics -----");
         float t = companyPayroll.getTotalmoney();
@@ -42,6 +42,6 @@ public class Main {
         System.out.println("Average paycheck: " + avg);
 
         System.out.println("\n----- Pay -----");
-        companyPayroll.processPending();
+        companyPayroll.processPaychecks();
     }
 }

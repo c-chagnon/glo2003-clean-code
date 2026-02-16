@@ -15,15 +15,6 @@ private List<Boolean> employeeHasHoliday;
         this.employeeHasHoliday = new ArrayList<>();
     }
 
-    public void processPending() {
-        IntStream.range(0, this.paycheckList.size()).forEach((i) -> this.employeeHasHoliday.set(i, false));
-        for (int i = 0; i < this.paycheckList.size(); i++) {
-            Paycheck p = this.paycheckList.get((i));
-            System.out.println("Sending " + p.getAmount() + "$ to " + p.getRecipient());
-        }
-        this.paycheckList.clear();
-    }
-
     public void addEmployee(Employee employee) {
         employeeList.add(employee);
         this.employeeHasHoliday.add(false);
@@ -55,7 +46,7 @@ private List<Boolean> employeeHasHoliday;
         return employeesWithRole;
     }
 
-    public void createPending() {
+    public void preparePaychecks() {
         for (int i = 0; i < employeeList.size(); i++) {
             Employee e = employeeList.get(i);
             if (e instanceof HourlyEmployee) {
@@ -63,11 +54,19 @@ private List<Boolean> employeeHasHoliday;
                 paycheckList.add(new Paycheck(e.getName(), he.getAmount() * he.getRate()));
             } else if (e instanceof SalariedEmployee) {
                 SalariedEmployee se = (SalariedEmployee) e;
-                paycheckList.add(new Paycheck(e.getName(), ((SalariedEmployee) e).getBiweekly()));
+                paycheckList.add(new Paycheck(e.getName(), se.getBiweekly()));
             } else {
-                throw new RuntimeException("something happened");
+                throw new RuntimeException("Employee " + e.getName() + " is not in supported types of employees.");
             }
         }
+    }
+
+    public void processPaychecks() {
+        for (int i = 0; i < this.paycheckList.size(); i++) {
+            Paycheck p = this.paycheckList.get((i));
+            System.out.println("Sending " + p.getAmount() + "$ to " + p.getRecipient());
+        }
+        this.paycheckList.clear();
     }
 
     public void salaryRaise(Employee e, float raise) {
