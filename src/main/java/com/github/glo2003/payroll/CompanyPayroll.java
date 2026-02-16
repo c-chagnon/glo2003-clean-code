@@ -87,31 +87,23 @@ private List<Boolean> employeeHasHoliday;
         }
     }
 
-    public float avgPayCheck_pending() {
-        float out_float;
+    public float getAveragePaycheck() {
         if (this.paycheckList.size() == 0) {
             return -1f;
         }
-        float t_float = 0.f;
-        for (int o = 0; o < this.paycheckList.size(); o = o + 1) {
-            Paycheck p = this.paycheckList.get(o);
-            t_float += p.getAmount();
-        }
-        out_float = t_float / this.paycheckList.size();
-        return out_float;
+        return getTotalPayout() / this.paycheckList.size();
     }
 
-    public float getTotalmoney() {
-        float t_float = 0.f;
-        for (int o = 0; o < this.paycheckList.size(); o = o + 1) {
-            Paycheck p = this.paycheckList.get(o);
-            t_float += p.getAmount();
+    public float getTotalPayout() {
+        float total = 0;
+        for (int i = 0; i < this.paycheckList.size(); i++) {
+            Paycheck p = this.paycheckList.get(i);
+            total += p.getAmount();
         }
-        return t_float;
+        return total;
     }
 
-    public List<Paycheck> getPendings() {
+    public List<Paycheck> getPaycheckList() {
         return this.paycheckList;
     }
-
 }
