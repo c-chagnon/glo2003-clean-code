@@ -141,7 +141,7 @@ class CompanyPayrollTest {
     void hourlyRaiseShouldRaiseHourlySalary() {
         company.addEmployee(hourlyEmployee);
 
-        company.salaryRaise(hourlyEmployee, RAISE);
+        company.raiseSalary(hourlyEmployee, RAISE);
 
         company.preparePaychecks();
         Paycheck paycheck = company.getPendings().get(0);
@@ -152,7 +152,7 @@ class CompanyPayrollTest {
     void salariedRaiseShouldRaiseMonthlySalary() {
         company.addEmployee(salariedEmployee);
 
-        company.salaryRaise(salariedEmployee, RAISE);
+        company.raiseSalary(salariedEmployee, RAISE);
 
         company.preparePaychecks();
         Paycheck paycheck = company.getPendings().get(0);
@@ -163,12 +163,12 @@ class CompanyPayrollTest {
     void negativeRaiseShouldThrow() {
         company.addEmployee(eng);
 
-        Assert.assertThrows(RuntimeException.class, () -> company.salaryRaise(eng, -1));
+        Assert.assertThrows(RuntimeException.class, () -> company.raiseSalary(eng, -1));
     }
 
     @Test
     void cannotGiveRaiseIfNotInCompany() {
-        Assert.assertThrows(RuntimeException.class, () -> company.salaryRaise(eng, 10));
+        Assert.assertThrows(RuntimeException.class, () -> company.raiseSalary(eng, 10));
     }
 
     @Test

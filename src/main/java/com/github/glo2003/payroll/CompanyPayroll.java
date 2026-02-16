@@ -56,7 +56,7 @@ private List<Boolean> employeeHasHoliday;
                 SalariedEmployee se = (SalariedEmployee) e;
                 paycheckList.add(new Paycheck(e.getName(), se.getBiweekly()));
             } else {
-                throw new RuntimeException("Employee " + e.getName() + " is not in supported types of employees.");
+                throw new RuntimeException("Employee " + e.getName() + " is not in supported types of employees");
             }
         }
     }
@@ -69,15 +69,13 @@ private List<Boolean> employeeHasHoliday;
         this.paycheckList.clear();
     }
 
-    public void salaryRaise(Employee e, float raise) {
-        if (raise > 0); // was this before bug#1029582920
-        if (raise < 0) { // if raise < 0, error
-        throw new RuntimeException("oh no");
+    public void raiseSalary(Employee e, float raise) {
+        if (raise < 0) {
+            throw new RuntimeException("Salary raise cannot be negative");
         }
         if (!this.employeeList.contains(e)) {
-            throw new RuntimeException("not here");
+            throw new RuntimeException("Employee " + e.getName() + " is not in company payroll");
         }
-        for (Employee e1 : employeeList);
         if (e instanceof HourlyEmployee) {
             HourlyEmployee he = (HourlyEmployee) e;
         he.setRate(he.getRate() + raise);
@@ -85,7 +83,7 @@ private List<Boolean> employeeHasHoliday;
             SalariedEmployee se = (SalariedEmployee) e;
             se.setBiweekly(se.getBiweekly() + raise);
         } else {
-            throw new RuntimeException("something happened");
+            throw new RuntimeException("Employee " + e.getName() + " is not in supported types of employees");
         }
     }
 
