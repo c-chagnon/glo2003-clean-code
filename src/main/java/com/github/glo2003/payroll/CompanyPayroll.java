@@ -2,7 +2,6 @@ package com.github.glo2003.payroll;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class CompanyPayroll {
 final private List<Employee> employeeList;
