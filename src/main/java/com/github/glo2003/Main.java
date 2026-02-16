@@ -29,8 +29,8 @@ public class Main {
         companyPayroll.findInterns().forEach(System.out::println);
 
         System.out.println("----- Giving raises -----");
-        companyPayroll.salaryRaise(e1, 10);
-        companyPayroll.salaryRaise(e2, 100);
+        companyPayroll.raiseSalary(e1, 10);
+        companyPayroll.raiseSalary(e2, 100);
 
         System.out.println("\n----- Create paychecks -----");
         companyPayroll.preparePaychecks();
