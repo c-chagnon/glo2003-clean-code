@@ -3,8 +3,8 @@ package com.github.glo2003.payroll;
 public class SalariedEmployee extends Employee {
     private float biweekly;
 
-    public SalariedEmployee(String name, String role, int vacation_days, float biweekly) {
-        super(name, role, vacation_days);
+    public SalariedEmployee(String name, String role, int vacationDays, float biweekly) {
+        super(name, role, vacationDays);
         this.biweekly = biweekly;
     }
 
