@@ -14,10 +14,13 @@ class CompanyPayrollTest {
     public static final float HOURLY_EMPLOYEE_AMOUNT = 25;
     public static final String HOURLY_EMPLOYEE_NAME = "William";
     public static final String SALARIED_EMPLOYEE_NAME = "Xavier";
+    public static final String CONTRACT_EMPLOYEE_NAME = "Eleonore";
     public static final float BIWEEKLY_EMPLOYEE_AMOUNT = 10_000;
     public static final float RAISE = 10;
     public static final float ANOTHER_MONTHLY_AMOUNT = 20_000;
     public static final int VACATION_DAYS = 12;
+    public static final float[] SCHEDULED_PAYOUTS = {100.f, 200.f, 300.f};
+    public static final float[] ANOTHER_SCHEDULED_PAYOUTS = {100.f};
     CompanyPayroll company;
     Employee vp;
     Employee eng;
@@ -27,6 +30,8 @@ class CompanyPayrollTest {
     HourlyEmployee hourlyEmployee;
     SalariedEmployee salariedEmployee;
     SalariedEmployee anotherSalariedEmployee;
+    ContractEmployee contractEmployee;
+    ContractEmployee anotherContractEmployee;
 
     @BeforeEach
     void setUp() {
@@ -40,6 +45,8 @@ class CompanyPayrollTest {
         hourlyEmployee = new HourlyEmployee(HOURLY_EMPLOYEE_NAME, "engineer", VACATION_DAYS, HOURLY_EMPLOYEE_RATE, HOURLY_EMPLOYEE_AMOUNT);
         salariedEmployee = new SalariedEmployee(SALARIED_EMPLOYEE_NAME, "engineer", VACATION_DAYS, BIWEEKLY_EMPLOYEE_AMOUNT);
         anotherSalariedEmployee = new SalariedEmployee("Yan", "manager", VACATION_DAYS, ANOTHER_MONTHLY_AMOUNT);
+        contractEmployee = new ContractEmployee(CONTRACT_EMPLOYEE_NAME, "engineer", SCHEDULED_PAYOUTS.clone());
+        anotherContractEmployee = new ContractEmployee("Audree", "engineer", ANOTHER_SCHEDULED_PAYOUTS.clone());
     }
 
     @Test
@@ -62,6 +69,27 @@ class CompanyPayrollTest {
         Paycheck paycheck = company.getPaycheckList().get(0);
         assertThat(paycheck.getRecipient()).isEqualTo(SALARIED_EMPLOYEE_NAME);
         assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_EMPLOYEE_AMOUNT);
+    }
+
+    @Test
+    void contractEmployee_preparePaychecks_createsCorrectContractPaycheck() {
+        company.addEmployee(contractEmployee);
+
+        company.preparePaychecks();
+
+        Paycheck paycheck = company.getPaycheckList().get(0);
+        assertThat(paycheck.getRecipient()).isEqualTo(CONTRACT_EMPLOYEE_NAME);
+        assertThat(paycheck.getAmount()).isEqualTo(SCHEDULED_PAYOUTS[0]);
+    }
+
+    @Test
+    void contractEmployeeNoPayoutsLeft_preparePaychecks_throwsRuntimeException() {
+        company.addEmployee(anotherContractEmployee);
+
+        company.preparePaychecks();
+        company.processPaychecks();
+
+        Assert.assertThrows(RuntimeException.class, () -> company.preparePaychecks());
     }
 
     @Test
@@ -144,6 +172,27 @@ class CompanyPayrollTest {
         company.preparePaychecks();
         Paycheck paycheck = company.getPaycheckList().get(0);
         assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_EMPLOYEE_AMOUNT + RAISE);
+    }
+
+    @Test
+    void contractEmployee_raiseSalary_contractSalaryIsRaised() {
+        company.addEmployee(contractEmployee);
+
+        company.raiseSalary(contractEmployee, RAISE);
+
+        company.preparePaychecks();
+        Paycheck paycheck = company.getPaycheckList().get(0);
+        assertThat(paycheck.getAmount()).isEqualTo(SCHEDULED_PAYOUTS[0] + RAISE);
+    }
+
+    @Test
+    void contractEmployeeNoPayoutsLeft_raiseSalary_throwsRuntimeException() {
+        company.addEmployee(anotherContractEmployee);
+
+        company.preparePaychecks();
+        company.processPaychecks();
+
+        Assert.assertThrows(RuntimeException.class, () -> company.raiseSalary(anotherContractEmployee, RAISE));
     }
 
     @Test
